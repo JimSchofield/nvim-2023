@@ -9,8 +9,8 @@ opt.number = true
 -- tabs
 opt.tabstop = 2
 opt.shiftwidth = 2
--- opt.expandtab = true
--- opt.autoindent = true
+opt.expandtab = true
+opt.autoindent = true
 
 -- line wrap
 opt.wrap = false
@@ -30,4 +30,4 @@ opt.swapfile = false
 
 -- list chars
 opt.list = true
-opt.listchars = { tab = '❘ ' , multispace = '| ', trail = '×', extends = '»', nbsp = '×' }
+opt.listchars = { tab = "❘ ", multispace = "| ", trail = "×", extends = "»", nbsp = "×" }
