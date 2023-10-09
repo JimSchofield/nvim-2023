@@ -31,3 +31,6 @@ opt.swapfile = false
 -- list chars
 opt.list = true
 opt.listchars = { tab = "❘ ", multispace = "| ", trail = "×", extends = "»", nbsp = "×" }
+
+-- Turn off Mouse
+opt.mouse = ""
