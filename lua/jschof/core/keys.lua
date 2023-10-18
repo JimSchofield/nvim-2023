@@ -1,5 +1,15 @@
 local keymap = vim.keymap
 
+-- leader!  Sets space to normal space in insert
+keymap.set('n', '<Space>', '', {})
+vim.g.mapleader = ' '
+
+-- Buffers
+keymap.set("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "Telescope buffers" })
+keymap.set("n", "<Tab>", ":bn<CR>", { desc = "Next buffer" })
+keymap.set("n", "<S-Tab>", ":bp<CR>", { desc = "Previous buffer" })
+keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Delete current buffer" })
+
 -- Clear search
 keymap.set("n", "<leader>cs", ":noh<CR>", { desc = "Clear search" })
 
