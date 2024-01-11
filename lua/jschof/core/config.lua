@@ -6,6 +6,9 @@ vim.opt.showcmd = true
 -- line numbers
 opt.number = true
 
+-- default system clipboard
+opt.clipboard:append("unnamedplus")
+
 -- tabs
 opt.tabstop = 2
 opt.shiftwidth = 2
