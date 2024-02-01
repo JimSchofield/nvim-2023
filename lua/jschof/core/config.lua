@@ -1,5 +1,8 @@
 local opt = vim.opt
 
+-- default system clipboard
+opt.clipboard:append("unnamedplus")
+
 -- show commands
 vim.opt.showcmd = true
 
