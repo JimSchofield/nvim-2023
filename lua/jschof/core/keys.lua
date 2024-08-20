@@ -4,11 +4,17 @@ local keymap = vim.keymap
 keymap.set('n', '<Space>', '', {})
 vim.g.mapleader = ' '
 
+-- Telescope
+keymap.set("n", "<leader>tt", ":Telescope<CR>", { desc = "Telescope" })
+keymap.set("n", "<leader>th", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope" })
+
 -- Buffers
 keymap.set("n", "<leader>bb", "<cmd>Telescope buffers<CR>", { desc = "Telescope buffers" })
 keymap.set("n", "<Tab>", ":bn<CR>", { desc = "Next buffer" })
 keymap.set("n", "<S-Tab>", ":bp<CR>", { desc = "Previous buffer" })
 keymap.set("n", "<leader>bd", ":bd<CR>", { desc = "Delete current buffer" })
+keymap.set("n", "<leader>bc", ":let @+ = expand('%:p')<CR>", { desc = "Copy full buffer path into system register" })
+
 
 -- Clear search
 keymap.set("n", "<leader>cs", ":noh<CR>", { desc = "Clear search" })
