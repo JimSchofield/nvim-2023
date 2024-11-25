@@ -35,7 +35,7 @@ return {
 			keymap.set("n", "<leader>gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
 			opts.desc = "See available code actions"
-			keymap.set({ "n", "v" }, "<leader>ca", "<cmd>CodeActionMenu<CR>", opts) -- see available code actions, in visual mode will apply to selection
+			keymap.set({ "n", "v" }, "<leader>ca", require('actions-preview').code_actions, opts) -- see available code actions, in visual mode will apply to selection
 
 			opts.desc = "Smart rename"
 			keymap.set("n", "<leader>sr", vim.lsp.buf.rename, opts) -- smart rename
@@ -76,10 +76,12 @@ return {
 		})
 
 		-- configure typescript server with plugin
-		lspconfig["tsserver"].setup({
+		lspconfig["ts_ls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
+
+    require'lspconfig'.hls.setup{}
 
 		-- configure eslint server
 		lspconfig["eslint"].setup({
@@ -100,32 +102,20 @@ return {
       }
 		})
 
-		-- configure rust server
-		lspconfig["rust_analyzer"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
 		-- configure css server
 		lspconfig["cssls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
 
-		-- configure css server
-		lspconfig["ember"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
+		-- configure ember server
+		-- lspconfig["ember"].setup({
+		-- 	capabilities = capabilities,
+		-- 	on_attach = on_attach,
+		-- })
 
 		-- configure tailwindcss server
 		lspconfig["tailwindcss"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-
-		-- configure prisma orm server
-		lspconfig["prismals"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
@@ -142,6 +132,13 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+		})
+
+		-- configure rust language server
+		lspconfig["rust_analyzer"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			filetypes = { "rust" },
 		})
 
 		-- configure lua server (with special settings)

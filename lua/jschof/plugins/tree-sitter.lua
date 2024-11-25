@@ -39,6 +39,7 @@ return {
           "prisma",
           "query",
           "svelte",
+          "rust",
           "tsx",
           "typescript",
           "vim",
