@@ -39,6 +39,7 @@ return {
           "prisma",
           "query",
           "svelte",
+          "styled", -- allows for embedded css to be styled (like in css``)
           "rust",
           "tsx",
           "typescript",
