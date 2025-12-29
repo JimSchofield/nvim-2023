@@ -1,0 +1,6 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "copy_buffer_path_to_clipboard"
+    ]
+}

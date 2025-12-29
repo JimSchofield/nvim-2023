@@ -35,7 +35,7 @@ return {
 			keymap.set("n", "<leader>gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
 			opts.desc = "See available code actions"
-			keymap.set({ "n", "v" }, "<leader>ca", require('actions-preview').code_actions, opts) -- see available code actions, in visual mode will apply to selection
+			keymap.set({ "n", "v" }, "<leader>ca", require("actions-preview").code_actions, opts) -- see available code actions, in visual mode will apply to selection
 
 			opts.desc = "Smart rename"
 			keymap.set("n", "<leader>sr", vim.lsp.buf.rename, opts) -- smart rename
@@ -81,29 +81,34 @@ return {
 			on_attach = on_attach,
 		})
 
-    require'lspconfig'.hls.setup{}
+		require("lspconfig").hls.setup({})
 
 		-- configure eslint server
 		lspconfig["eslint"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
-      filetypes = {
-        "astro",
-        "css",
-        "html",
-        "javascript",
-        "javascriptreact",
-        "less",
-        "sass",
-        "scss",
-        "typescript",
-        "typescriptreact",
-        "vue",
-      }
+			filetypes = {
+				"astro",
+				"css",
+				"html",
+				"javascript",
+				"javascriptreact",
+				"less",
+				"sass",
+				"scss",
+				"typescript",
+				"typescriptreact",
+				"vue",
+			},
 		})
 
 		-- configure css server
 		lspconfig["cssls"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		lspconfig["gopls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
@@ -120,6 +125,16 @@ return {
 			on_attach = on_attach,
 		})
 
+		lspconfig.lexical.setup({
+      cmd = { "start_lexical.sh" },
+			filetypes = { "elixir", "eelixir", "heex", "surface" },
+			root_dir = function(fname)
+				return lspconfig.util.root_pattern("mix.exs")(fname)
+					or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+			end,
+			single_file_support = true,
+		})
+
 		-- configure graphql language server
 		lspconfig["graphql"].setup({
 			capabilities = capabilities,
@@ -132,13 +147,6 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-		})
-
-		-- configure rust language server
-		lspconfig["rust_analyzer"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "rust" },
 		})
 
 		-- configure lua server (with special settings)
