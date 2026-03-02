@@ -19,9 +19,6 @@ keymap.set("n", "<Leader>w", ":w<CR>", { desc = "Save" })
 keymap.set("n", "<leader>vim", ":tabe ~/.config/nvim/<CR>", { desc = "Open NVim config" })
 keymap.set("n", "<leader>x", ":x<CR>", { desc = "Save and close" })
 
--- Explore
--- keymap.set("n", "<leader>e", ":Explore<CR>", { desc = "Explorer with netrw" })
-
 -- Fugitive
 keymap.set("n", "<leader>gs", ":Git<CR>", { desc = "Git status" })
 keymap.set("n", "<leader>gc", ":Git commit<CR>", { desc = "Git commit" })

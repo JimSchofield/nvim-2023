@@ -16,7 +16,7 @@ opt.expandtab = true
 opt.autoindent = true
 
 -- line wrap
-opt.wrap = false
+opt.wrap = true
 
 -- case
 opt.ignorecase = true
@@ -24,9 +24,6 @@ opt.smartcase = true
 
 -- cursor line
 opt.cursorline = true
-
--- clipboard
--- opt.clipboard:append("unnamedplus")
 
 -- swap
 opt.swapfile = false

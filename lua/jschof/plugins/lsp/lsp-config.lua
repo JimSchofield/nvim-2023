@@ -12,62 +12,63 @@ return {
 		-- import cmp-nvim-lsp plugin
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-		local keymap = vim.keymap -- for conciseness
+		local keymap = vim.keymap
 
-		local opts = { noremap = true, silent = true }
+		local function map(mode, lhs, rhs, desc, bufnr)
+			keymap.set(mode, lhs, rhs, { noremap = true, silent = true, buffer = bufnr, desc = desc })
+		end
+
 		local on_attach = function(client, bufnr)
-			opts.buffer = bufnr
+			map("n", "gR", "<cmd>Telescope lsp_references<CR>", "Show LSP references", bufnr)
+			map("n", "<leader>gD", vim.lsp.buf.declaration, "Go to declaration", bufnr)
+			map("n", "<leader>gd", "<cmd>Telescope lsp_definitions<CR>", "Show LSP definitions", bufnr)
+			map("n", "<leader>gi", "<cmd>Telescope lsp_implementations<CR>", "Show LSP implementations", bufnr)
+			map("n", "<leader>gt", "<cmd>Telescope lsp_type_definitions<CR>", "Show LSP type definitions", bufnr)
+			map({ "n", "v" }, "<leader>ca", require("actions-preview").code_actions, "See available code actions", bufnr)
+			map("n", "<leader>sr", vim.lsp.buf.rename, "Smart rename", bufnr)
+			map("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", "Show buffer diagnostics", bufnr)
+			map("n", "<leader>d", vim.diagnostic.open_float, "Show line diagnostics", bufnr)
+			map("n", "<leader>[", function() vim.diagnostic.jump({ count = -1 }) end, "Go to previous diagnostic", bufnr)
+			map("n", "<leader>]", function() vim.diagnostic.jump({ count = 1 }) end, "Go to next diagnostic", bufnr)
+			map("n", "K", vim.lsp.buf.hover, "Show documentation for what is under cursor", bufnr)
+			map("i", "<C-k>", vim.lsp.buf.signature_help, "Show signature help", bufnr)
+			map("n", "<leader>rs", ":LspRestart<CR>", "Restart LSP", bufnr)
 
-			-- set keybinds
-			opts.desc = "Show LSP references"
-			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+			-- Enable inlay hints if supported
+			if client.server_capabilities.inlayHintProvider then
+				vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+			end
 
-			opts.desc = "Go to declaration"
-			keymap.set("n", "<leader>gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
-			opts.desc = "Show LSP definitions"
-			keymap.set("n", "<leader>gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
-
-			opts.desc = "Show LSP implementations"
-			keymap.set("n", "<leader>gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
-
-			opts.desc = "Show LSP type definitions"
-			keymap.set("n", "<leader>gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
-
-			opts.desc = "See available code actions"
-			keymap.set({ "n", "v" }, "<leader>ca", require("actions-preview").code_actions, opts) -- see available code actions, in visual mode will apply to selection
-
-			opts.desc = "Smart rename"
-			keymap.set("n", "<leader>sr", vim.lsp.buf.rename, opts) -- smart rename
-
-			opts.desc = "Show buffer diagnostics"
-			keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
-
-			opts.desc = "Show line diagnostics"
-			keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
-
-			opts.desc = "Go to previous diagnostic"
-			keymap.set("n", "<leader>[", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
-
-			opts.desc = "Go to next diagnostic"
-			keymap.set("n", "<leader>]", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
-
-			opts.desc = "Show documentation for what is under cursor"
-			keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-
-			opts.desc = "Restart LSP"
-			keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+			-- Enable document highlight on cursor hold
+			if client.server_capabilities.documentHighlightProvider then
+				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+					buffer = bufnr,
+					callback = vim.lsp.buf.document_highlight,
+				})
+				vim.api.nvim_create_autocmd("CursorMoved", {
+					buffer = bufnr,
+					callback = vim.lsp.buf.clear_references,
+				})
+			end
 		end
 
 		-- used to enable autocompletion (assign to every lsp server config)
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
-		-- Change the Diagnostic symbols in the sign column (gutter)
-		local signs = { Error = "", Warn = "", Hint = "󰠠", Info = "" }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
+		-- Configure diagnostic display
+		vim.diagnostic.config({
+			virtual_text = { prefix = "●", spacing = 4 },
+			severity_sort = true,
+			float = { border = "rounded", source = true },
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = "",
+					[vim.diagnostic.severity.WARN] = "",
+					[vim.diagnostic.severity.HINT] = "󰠠",
+					[vim.diagnostic.severity.INFO] = "",
+				},
+			},
+		})
 
 		-- configure html server
 		lspconfig["html"].setup({
@@ -81,8 +82,7 @@ return {
 			on_attach = on_attach,
 		})
 
-		require("lspconfig").hls.setup({})
-
+	
 		-- configure eslint server
 		lspconfig["eslint"].setup({
 			capabilities = capabilities,
@@ -113,12 +113,6 @@ return {
 			on_attach = on_attach,
 		})
 
-		-- configure ember server
-		-- lspconfig["ember"].setup({
-		-- 	capabilities = capabilities,
-		-- 	on_attach = on_attach,
-		-- })
-
 		-- configure tailwindcss server
 		lspconfig["tailwindcss"].setup({
 			capabilities = capabilities,
@@ -126,7 +120,9 @@ return {
 		})
 
 		lspconfig.lexical.setup({
-      cmd = { "start_lexical.sh" },
+			capabilities = capabilities,
+			on_attach = on_attach,
+			cmd = { "start_lexical.sh" },
 			filetypes = { "elixir", "eelixir", "heex", "surface" },
 			root_dir = function(fname)
 				return lspconfig.util.root_pattern("mix.exs")(fname)

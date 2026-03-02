@@ -29,6 +29,7 @@ return {
 				"cssls",
 				"emmet_ls",
 				"eslint",
+				"gopls",
 				"graphql",
 				"html",
 				"lua_ls",
@@ -41,9 +42,8 @@ return {
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"prettier", -- prettier formatter
-				"stylua", -- lua formatter
-				"eslint_d", -- js linter
+				"prettier",
+				"stylua",
 			},
 		})
 	end,
