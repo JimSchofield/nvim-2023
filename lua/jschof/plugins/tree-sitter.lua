@@ -34,7 +34,6 @@ return {
           "query",
           "rust",
           "styled", -- allows for embedded css to be styled (like in css``)
-          "svelte",
           "tsx",
           "typescript",
           "vim",

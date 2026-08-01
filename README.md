@@ -101,6 +101,15 @@ Panes are navigated with `<C-h/j/k/l>`, shared with tmux via
 
 ## Language servers
 
-Installed via Mason: `ts_ls`, `eslint`, `html`, `cssls`, `tailwindcss`,
-`graphql`, `emmet_ls`, `gopls`, `lua_ls`. Elixir uses `lexical`, which is
-expected on `PATH` as `start_lexical.sh`.
+Installed via Mason: `ts_ls`, `eslint`, `html`, `cssls`, `graphql`,
+`emmet_ls`, `lua_ls`. Mason-installed servers are enabled automatically;
+`rust_analyzer` is excluded because rustaceanvim manages it itself.
+
+Elixir uses `lexical`, built from source and expected on `PATH` as
+`start_lexical.sh`.
+
+Servers use the defaults nvim-lspconfig ships in its `lsp/` directory.
+`lsp-config.lua` only holds overrides for the few that differ, plus the
+`LspAttach` autocmd that sets the keymaps above. To add a server, add it
+to `ensure_installed` in `lsp/mason.lua` — it needs no config unless you
+want to change something.

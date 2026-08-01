@@ -23,12 +23,9 @@ return {
 				"cssls",
 				"emmet_ls",
 				"eslint",
-				"gopls",
 				"graphql",
 				"html",
 				"lua_ls",
-				"svelte",
-				"tailwindcss",
 				"ts_ls",
 			},
 			-- Installed servers are enabled automatically. rust_analyzer is

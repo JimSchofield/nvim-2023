@@ -115,11 +115,11 @@ return {
 		})
 
 		vim.lsp.config("graphql", {
-			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+			filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact" },
 		})
 
 		vim.lsp.config("emmet_ls", {
-			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+			filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less" },
 		})
 
 		-- Built from source rather than installed through Mason, so it also
