@@ -1,19 +1,14 @@
+-- Mason moved to the mason-org account, and v2 requires Neovim 0.11.
+-- mason-lspconfig no longer wires servers into lspconfig itself; it calls
+-- vim.lsp.enable() for whatever Mason has installed.
 return {
-	"williamboman/mason.nvim",
+	"mason-org/mason.nvim",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
 	config = function()
-		-- import mason
-		local mason = require("mason")
-
-		-- import mason-lspconfig
-		local mason_lspconfig = require("mason-lspconfig")
-		local mason_tool_installer = require("mason-tool-installer")
-
-		-- enable mason and configure icons
-		mason.setup({
+		require("mason").setup({
 			ui = {
 				icons = {
 					package_installed = "✓",
@@ -23,8 +18,7 @@ return {
 			},
 		})
 
-		mason_lspconfig.setup({
-			-- list of servers for mason to install
+		require("mason-lspconfig").setup({
 			ensure_installed = {
 				"cssls",
 				"emmet_ls",
@@ -33,14 +27,19 @@ return {
 				"graphql",
 				"html",
 				"lua_ls",
+				"svelte",
 				"tailwindcss",
 				"ts_ls",
 			},
-			-- auto-install configured servers (with lspconfig)
-			automatic_installation = true, -- not the same as ensure_installed
+			-- Installed servers are enabled automatically. rust_analyzer is
+			-- excluded because rustaceanvim starts and configures it itself;
+			-- enabling it here too would attach two clients to every Rust buffer.
+			automatic_enable = {
+				exclude = { "rust_analyzer" },
+			},
 		})
 
-		mason_tool_installer.setup({
+		require("mason-tool-installer").setup({
 			ensure_installed = {
 				"prettier",
 				"stylua",
