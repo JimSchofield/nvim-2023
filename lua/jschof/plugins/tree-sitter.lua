@@ -3,9 +3,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
-    dependencies = {
-      "windwp/nvim-ts-autotag",
-    },
     config = function()
       -- import nvim-treesitter plugin
       local treesitter = require("nvim-treesitter.configs")
@@ -17,10 +14,6 @@ return {
         },
         -- enable indentation
         indent = { enable = true },
-        -- enable autotagging (w/ nvim-ts-autotag plugin)
-        autotag = {
-          enable = true,
-        },
         -- ensure these language parsers are installed
         ensure_installed = {
           "bash",
@@ -28,20 +21,20 @@ return {
           "dockerfile",
           "elixir",
           "gitignore",
+          "glimmer",
           "graphql",
+          "groovy",
           "html",
           "javascript",
-					"glimmer",
-					"groovy",
           "json",
           "lua",
           "markdown",
           "markdown_inline",
           "prisma",
           "query",
-          "svelte",
-          "styled", -- allows for embedded css to be styled (like in css``)
           "rust",
+          "styled", -- allows for embedded css to be styled (like in css``)
+          "svelte",
           "tsx",
           "typescript",
           "vim",
@@ -56,12 +49,15 @@ return {
             node_decremental = "<bs>",
           },
         },
-        -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
-        context_commentstring = {
-          enable = true,
-          enable_autocmd = false,
-        },
       })
     end,
+  },
+
+  -- Autotag configures itself now; setting it through nvim-treesitter.configs
+  -- is deprecated and will be removed in nvim-ts-autotag 1.0.
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
+    config = true,
   },
 }
