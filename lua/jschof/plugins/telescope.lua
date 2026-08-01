@@ -10,8 +10,6 @@ return {
     local telescope = require("telescope")
     local actions = require("telescope.actions")
 
-    telescope.load_extension('zoxide')
-
     telescope.setup({
       defaults = {
         path_display = { "truncate " },
@@ -34,7 +32,5 @@ return {
     keymap.set("n", "<leader>th", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
     keymap.set("n", "<leader>rg", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
     keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
-    keymap.set("n", "<leader>fz", "<cmd>Telescope zoxide list<cr>", { desc = "Find from zoxide list"})
-
   end,
 }
